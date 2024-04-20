@@ -1,8 +1,9 @@
 class Hotel::Procurer::AmenityClassifier
-  ROOM_AMENITIES = ["aircon", "tv", "coffee machine", "kettle", "hair dryer", "iron", "bathtub"].freeze
+  ROOM_AMENITIES = ["aircon", "tv", "coffee machine", "kettle", "hair dryer", "iron", "bathtub", "minibar"].freeze
 
   STANDARD_DICT = {
     "tub" => "bathtub",
+    "bath tub" => "bathtub",
     "wi fi" => "wifi"
   }
 

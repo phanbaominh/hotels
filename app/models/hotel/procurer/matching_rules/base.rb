@@ -24,7 +24,7 @@ module Hotel::Procurer::MatchingRules
     end
 
     def field_value_of(supplier)
-      data.find { |d| d["supplier"] == supplier }&.dig(field)
+      data.find { |d| d[Hotel::Procurer::SUPPLIER_KEY] == supplier }&.dig(field)
     end
   end
 
