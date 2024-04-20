@@ -80,7 +80,7 @@ describe Hotel::Procurer::Mappers::Patagonia do
           }
         ]
       },
-      "booking_conditions" => []
+      "booking_conditions" => nil
     }
   end
 

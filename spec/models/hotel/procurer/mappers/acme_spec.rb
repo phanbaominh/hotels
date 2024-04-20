@@ -7,7 +7,7 @@ describe Hotel::Procurer::Mappers::Acme do
       "DestinationId" => 5432,
       "Name" => "Beach Villas Singapore",
       "Latitude" => 1.264751,
-      "Longitude" => 103.824006,
+      "Longitude" => nil,
       "Address" => "8 Sentosa Gateway, Beach Villas",
       "City" => "Singapore",
       "Country" => "SG",
@@ -29,7 +29,6 @@ describe Hotel::Procurer::Mappers::Acme do
       "name" => "Beach Villas Singapore",
       "location" => {
         "lat" => 1.264751,
-        "lng" => 103.824006,
         "address" => "8 Sentosa Gateway, Beach Villas, 098269",
         "city" => "Singapore",
         "country" => "Singapore"
@@ -42,7 +41,7 @@ describe Hotel::Procurer::Mappers::Acme do
         "room" => []
       },
       "images" => {},
-      "booking_conditions" => []
+      "booking_conditions" => nil
     }
   end
 

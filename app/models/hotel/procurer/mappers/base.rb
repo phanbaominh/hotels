@@ -18,6 +18,7 @@ class Hotel::Procurer::Mappers::Base
     if result["location"]["country"]
       result["location"]["country"] = standardized_country(result["location"]["country"])
     end
+    result["location"].compact_blank!
     result
   end
 
@@ -38,9 +39,7 @@ class Hotel::Procurer::Mappers::Base
   end
 
   def location
-    location = data["location"] || {}
-    location["country"] = standardized_country(location["country"])
-    location
+    data["location"] || {}
   end
 
   def description
@@ -56,7 +55,7 @@ class Hotel::Procurer::Mappers::Base
   end
 
   def booking_conditions
-    data["booking_conditions"] || []
+    data["booking_conditions"]
   end
 
   def classified_amenities(raw_amenities)
