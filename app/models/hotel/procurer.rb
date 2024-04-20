@@ -1,3 +1,5 @@
+require "open-uri"
+
 class Hotel::Procurer
   # PROBLEMS:
   #  "1 Nanson Rd, Singapore 238909" what is the correct address format?
