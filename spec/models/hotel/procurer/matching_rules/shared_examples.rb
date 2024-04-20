@@ -3,10 +3,12 @@ RSpec.shared_examples "a matching rule" do
 
   let(:field) { "field" }
   let(:data) do
-    field_values.map do |field_value|
-      {
+    field_values.map.with_index do |field_value, i|
+      supplier_data = {
         field => field_value
       }
+      supplier_data["supplier"] = "supplier_#{i}"
+      supplier_data
     end
   end
 
@@ -19,7 +21,7 @@ RSpec.shared_examples "a matching rule" do
       ]
     end
 
-    it "returns the field value" do
+    it "returns the single field value" do
       expect(subject.apply(field, data)).to eq(single_field_value)
     end
   end

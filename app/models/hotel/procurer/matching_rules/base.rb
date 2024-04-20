@@ -22,6 +22,10 @@ module Hotel::Procurer::MatchingRules
     def respond_to_missing?(method, include_private = false)
       data.respond_to?(method) || super
     end
+
+    def field_value_of(supplier)
+      data.find { |d| d["supplier"] == supplier }&.dig(field)
+    end
   end
 
   class Base
