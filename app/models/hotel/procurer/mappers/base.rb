@@ -4,7 +4,7 @@ class Hotel::Procurer::Mappers::Base
   end
 
   def map
-    {
+    result = {
       "id" => id,
       "destination_id" => destination_id,
       "name" => name,
@@ -14,6 +14,14 @@ class Hotel::Procurer::Mappers::Base
       "images" => images,
       "booking_conditions" => booking_conditions
     }
+    after_map(result)
+  end
+
+  def after_map(result)
+    if result["location"]["country"]
+      result["location"]["country"] = standardized_country(result["location"]["country"])
+    end
+    result
   end
 
   private
