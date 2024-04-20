@@ -32,7 +32,7 @@ describe Hotel::Procurer::Mappers::Acme do
         "lng" => 103.824006,
         "address" => "8 Sentosa Gateway, Beach Villas, 098269",
         "city" => "Singapore",
-        "country" => "SG"
+        "country" => "Singapore"
       },
       "description" => "This 5 star hotel is located on the coastline of Singapore.",
       "amenities" => {

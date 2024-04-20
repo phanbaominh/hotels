@@ -33,7 +33,9 @@ class Hotel::Procurer::Mappers::Base
   end
 
   def location
-    data["location"] || {}
+    location = data["location"] || {}
+    location["country"] = standardized_country(location["country"])
+    location
   end
 
   def description
@@ -56,5 +58,13 @@ class Hotel::Procurer::Mappers::Base
     return raw_amenities unless raw_amenities.is_a?(Array)
 
     Hotel::Procurer::AmenityClassifier.new(raw_amenities).classify
+  end
+
+  def standardized_country(raw_value)
+    return raw_value if raw_value.blank?
+
+    (
+      ISO3166::Country.new(raw_value) || ISO3166::Country.find_country_by_any_name(raw_value)
+    )&.iso_short_name || raw_value
   end
 end
