@@ -1,9 +1,6 @@
 class Hotel::Procurer::Mappers::Base
-  def initialize(data)
+  def map(data)
     @data = data
-  end
-
-  def map
     result = {
       "id" => id,
       "destination_id" => destination_id,

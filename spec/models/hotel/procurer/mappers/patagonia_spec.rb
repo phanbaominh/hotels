@@ -85,6 +85,6 @@ describe Hotel::Procurer::Mappers::Patagonia do
   end
 
   it "maps data correctly" do
-    expect(described_class.new(raw_data).map).to match(mapped_data)
+    expect(described_class.new.map(raw_data)).to match(mapped_data)
   end
 end
