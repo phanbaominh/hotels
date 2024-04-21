@@ -1,24 +1,27 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Introduction
 
-Things you may want to cover:
+- Access deployed version using this link: https://hotels-0j6j.onrender.com/hotels
 
-* Ruby version
+## Dependencies
 
-* System dependencies
+- Ruby 3.1.3
+- Bundler 2.4.20
 
-* Configuration
+## Setup
 
-* Database creation
+- Install ruby using [rbenv](https://github.com/rbenv/rbenv)
+- Install bundle `gem install bundle`
+- Go to projects folder
+- Run `bundle`
+- Run `bin/rails db:setup`
 
-* Database initialization
+## Development
 
-* How to run the test suite
+- Start up rails service `bin/rails s`
+- Api endpoint is available at `localhost:3000/hotels`
 
-* Services (job queues, cache servers, search engines, etc.)
+## Testing
 
-* Deployment instructions
-
-* ...
+- Run `bin/rspec path/to/test/files/or/folder`
