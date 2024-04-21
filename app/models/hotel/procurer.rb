@@ -75,8 +75,8 @@ class Hotel::Procurer
   end
 
   def hotels_data_from_all_suppliers
-    SUPPLIERS.map do |supplier|
-      fetch_data(supplier).map do |hotel_data|
+    fetch_data.map do |supplier, hotels_data|
+      hotels_data.map do |hotel_data|
         mapped_data = mapper(supplier).map(clean(hotel_data))
         mapped_data[SUPPLIER_KEY] = supplier
         mapped_data
@@ -96,12 +96,8 @@ class Hotel::Procurer
     Cleaner.clean(data)
   end
 
-  def fetch_data(supplier)
-    # TODO: use Faraday, error handling, etc
-
-    file = URI.parse(SUPPLIER_URLS[supplier]).open
-    raw_data = file.read
-    JSON.parse(raw_data)
+  def fetch_data
+    Fetcher.fetch
   end
 
   def matcher

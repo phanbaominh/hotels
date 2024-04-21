@@ -4,13 +4,13 @@ describe Hotel::Procurer do
   subject { described_class.new }
 
   before do
-    described_class::SUPPLIERS.each do |supplier|
-      allow(subject)
-        .to receive(:fetch_data)
-        .with(supplier).and_return(
-          JSON.parse(File.read("spec/fixtures/procure/#{supplier}.json"))
-        )
-    end
+    allow(subject)
+      .to receive(:fetch_data)
+      .and_return(
+        described_class::SUPPLIERS.each_with_object({}) do |supplier, hash|
+          hash[supplier] = JSON.parse(File.read("spec/fixtures/procure/#{supplier}.json"))
+        end
+      )
   end
 
   let(:expected_data) do
