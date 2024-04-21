@@ -1,6 +1,7 @@
 class HotelsController < ApplicationController
   def index
-    service = Hotels::Index.new(index_params)
+    # if we can assume procured data is changed infrequently, we can cache it
+    service = Hotels::Index.new(index_params, use_cache: true)
 
     render json: service.call.data
   end

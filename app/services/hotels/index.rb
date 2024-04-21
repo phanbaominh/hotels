@@ -2,8 +2,9 @@ module Hotels
   class Index
     attr_reader :data
 
-    def initialize(params)
+    def initialize(params, use_cache: false)
       @params = params
+      @use_cache = use_cache
     end
 
     def call
@@ -16,7 +17,7 @@ module Hotels
 
     private
 
-    attr_reader :params
+    attr_reader :params, :use_cache
 
     def filter_by_destination
       return if params[:destination].blank?
@@ -31,7 +32,17 @@ module Hotels
     end
 
     def procure_data
-      Hotel::Procurer.new.procure
+      if use_cache
+        Rails.cache.fetch("hotels", expires_in: cache_expiration) do
+          Hotel::Procurer.new.procure
+        end
+      else
+        Hotel::Procurer.new.procure
+      end
+    end
+
+    def cache_expiration
+      (ENV["PROCURE_CACHE_EXPIRATION"] || 1).to_i.minute
     end
   end
 end
