@@ -12,6 +12,7 @@ class Hotel::Procurer::Mappers::Base
       "booking_conditions" => booking_conditions
     }
     after_map(result)
+    result
   end
 
   def after_map(result)
@@ -19,7 +20,6 @@ class Hotel::Procurer::Mappers::Base
       result["location"]["country"] = standardized_country(result["location"]["country"])
     end
     result["location"].compact_blank!
-    result
   end
 
   private

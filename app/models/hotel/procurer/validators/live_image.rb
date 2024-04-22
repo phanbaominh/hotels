@@ -6,18 +6,24 @@ module Hotel::Procurer::Validators
           max_concurrency: (ENV["MAX_FETCHING_IMAGE_CONCURRENCY"] || 3).to_i
         )
 
-        hotel_data["images"].values.flatten.pluck("link").each do |image_link|
+        all_image_links = hotel_data["images"].values.flatten.pluck("link")
+
+        all_image_links.each do |image_link|
           hydra.queue(build_request(image_link))
         end
 
         hydra.run
 
+        remove_dead_image_links(hotel_data)
+      end
+
+      private
+
+      def remove_dead_image_links(hotel_data)
         hotel_data["images"].each do |image_type, images|
           images.select! { |image| dead_image_links.exclude?(image["link"]) }
         end
       end
-
-      private
 
       def build_request(image_link)
         TyphoeusRequest.build(image_link, timeout: timeout) do |response, error_message|

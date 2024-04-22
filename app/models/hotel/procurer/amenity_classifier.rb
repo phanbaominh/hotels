@@ -6,7 +6,7 @@ class Hotel::Procurer::AmenityClassifier
     "tub" => "bathtub",
     "bath tub" => "bathtub",
     "wi fi" => "wifi"
-  }
+  }.freeze
 
   def initialize(amenities)
     @amenities = standardize(amenities)

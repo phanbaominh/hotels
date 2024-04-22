@@ -1,4 +1,4 @@
-require "open-uri"
+# frozen_string_literal: true
 
 class Hotel::Procurer
   # PROBLEMS:
@@ -36,12 +36,12 @@ class Hotel::Procurer
   RULES = {
     "id" => MatchingRules::PickOne.new,
     "destination_id" => MatchingRules::PickOne.new,
-    # acme supplier provide the full name of the hotel compare to paperflies e.g InterContinental Singapore Robertson Quay vs InterContinental
+    # acme and patagonia supplier provide the full name of the hotel compare to paperflies e.g InterContinental Singapore Robertson Quay vs InterContinental
     # There are two InterContinental hotels in Singapore so the full name help to differentiate them.
-    # acme supplier also provide more hotels data than patagonia so we prioritize acme.
+    # pagatonia give more correct name compare to acme e.g Hilton Tokyo Shinjuku vs Hilton Shinjuku Tokyo. The most correct would be Hilton Tokyo.
     # Of course if there are more data given for each supplier, we can make a better decision on which supplier to prioritize.
     # We can also implement a more robust approach like searching the hotel name on google and see if the search result return the right hotel.
-    "name" => MatchingRules::PriorityPickOne.new([ACME]),
+    "name" => MatchingRules::PriorityPickOne.new([PATAGONIA, ACME]),
     "location" => MatchingRules::Merge.new,
     "description" => MatchingRules::PickLongest.new,
     "amenities" => MatchingRules::Nested.new(
@@ -57,7 +57,7 @@ class Hotel::Procurer
         "amenities" => UNIQUE_CONCAT_IMAGE
       }
     ),
-    "booking_conditions" => MatchingRules::PickOne.new
+    "booking_conditions" => MatchingRules::PriorityPickOne.new([PAPERFLIES])
   }.freeze
 
   def procure
