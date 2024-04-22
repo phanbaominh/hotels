@@ -4,7 +4,6 @@
 # Then we have a separate job to combine all the data from the files and process and store them.
 # This can be done frequently to keep the data up-to-date.
 
-
 class Hotel::Procurer
   class Fetcher
     class << self
@@ -36,7 +35,7 @@ class Hotel::Procurer
       end
 
       def timeout
-        ENV["FETCHING_HOTELS_TIMEOUT"] || 3
+        ENV["FETCHING_HOTELS_TIMEOUT"] || 10
       end
 
       def log_error(supplier, msg)
