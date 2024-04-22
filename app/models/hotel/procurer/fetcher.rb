@@ -26,20 +26,17 @@ class Hotel::Procurer
       private
 
       def build_request(supplier, data)
-        request = Typhoeus::Request.new(SUPPLIER_URLS[supplier])
-
-        request.on_complete do |response|
+        TyphoeusRequest.build(SUPPLIER_URLS[supplier], timeout: timeout) do |response, error_message|
           if response.success?
             data[supplier] = JSON.parse(response.body)
-          elsif response.timed_out?
-            log_error(supplier, "got a time out")
-          elsif response.code == 0
-            log_error(supplier, response.return_message)
           else
-            log_error(supplier, "HTTP request failed with " + response.code.to_s)
+            log_error(supplier, error_message)
           end
         end
-        request
+      end
+
+      def timeout
+        ENV["FETCHING_HOTELS_TIMEOUT"] || 3
       end
 
       def log_error(supplier, msg)

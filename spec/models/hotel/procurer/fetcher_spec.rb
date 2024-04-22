@@ -36,6 +36,7 @@ describe Hotel::Procurer::Fetcher do
 
       context "when MAX_FETCHING_HOTELS_CONCURRENCY is set" do
         it "inits hydra with max_concurrency from env" do
+          allow(ENV).to receive(:[])
           allow(ENV).to receive(:[]).with("MAX_FETCHING_HOTELS_CONCURRENCY").and_return("5")
 
           described_class.fetch
@@ -65,49 +66,19 @@ describe Hotel::Procurer::Fetcher do
         response = Typhoeus::Response.new(code: 200, body: response_body(supplier))
         Typhoeus.stub(url).and_return(response)
       end
+
+      error_response = Typhoeus::Response.new(code: 500)
+      Typhoeus.stub(Hotel::Procurer::SUPPLIER_URLS[error_supplier]).and_return(error_response)
     end
 
-    after { Typhoeus::Expectation.clear }
-
-    shared_examples "returns data missing the error supplier with error message" do |error_message|
-      it "returns data missing the error supplier" do
-        expect(described_class.fetch).to match(build_expected_data(all_suppliers - [error_supplier]))
-      end
-
-      it "logs the error" do
-        described_class.fetch
-
-        expect(Rails.logger).to have_received(:error).with("Error fetching #{error_supplier}: " + error_message)
-      end
+    it "returns data missing the error supplier" do
+      expect(described_class.fetch).to match(build_expected_data(all_suppliers - [error_supplier]))
     end
 
-    context "when non-http response" do
-      before do
-        response = Typhoeus::Response.new(code: 0)
-        allow(response).to receive(:return_message).and_return("unknown error")
-        Typhoeus.stub(Hotel::Procurer::SUPPLIER_URLS[error_supplier]).and_return(response)
-      end
+    it "logs the error" do
+      described_class.fetch
 
-      include_examples "returns data missing the error supplier with error message", "unknown error"
-    end
-
-    context "when error response code" do
-      before do
-        response = Typhoeus::Response.new(code: 500)
-        Typhoeus.stub(Hotel::Procurer::SUPPLIER_URLS[error_supplier]).and_return(response)
-      end
-
-      include_examples "returns data missing the error supplier with error message", "HTTP request failed with 500"
-    end
-
-    context "when timeout" do
-      before do
-        response = Typhoeus::Response.new(code: 0)
-        allow(response).to receive(:timed_out?).and_return(true)
-        Typhoeus.stub(Hotel::Procurer::SUPPLIER_URLS[error_supplier]).and_return(response)
-      end
-
-      include_examples "returns data missing the error supplier with error message", "got a time out"
+      expect(Rails.logger).to have_received(:error).with("Error fetching #{error_supplier}: " + "HTTP request failed with 500")
     end
   end
 end
