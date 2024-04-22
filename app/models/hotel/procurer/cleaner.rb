@@ -12,7 +12,4 @@ class Hotel::Procurer::Cleaner
       data
     end
   end
-
-  def self.clean_one(data)
-  end
 end
