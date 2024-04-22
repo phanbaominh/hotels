@@ -18,10 +18,7 @@ module Hotel::Procurer::Mappers
       {
         "lat" => data["Latitude"],
         "lng" => data["Longitude"],
-        "address" => [
-          data["Address"],
-          data["PostalCode"]
-        ].join(", "),
+        "address" => address,
         "city" => data["City"],
         "country" => data["Country"]
       }
@@ -33,6 +30,14 @@ module Hotel::Procurer::Mappers
 
     def amenities
       classified_amenities(data["Facilities"]) || super
+    end
+
+    def address
+      if data["Address"]&.include?(data["PostalCode"])
+        data["Address"]
+      else
+        [data["Address"], data["PostalCode"]].compact.join(", ")
+      end
     end
   end
 end

@@ -48,4 +48,17 @@ describe Hotel::Procurer::Mappers::Acme do
   it "maps data correctly" do
     expect(described_class.new.map(raw_data)).to match(mapped_data)
   end
+
+  context "when address already include postal code" do
+    let(:raw_data) do
+      {
+        "Address" => "160-0023, SHINJUKU-KU, 6-6-2 NISHI-SHINJUKU, JAPAN",
+        "PostalCode" => "160-0023"
+      }
+    end
+    it "only include postal code one time" do
+      expect(described_class.new.map(raw_data)["location"]["address"])
+        .to eq("160-0023, SHINJUKU-KU, 6-6-2 NISHI-SHINJUKU, JAPAN")
+    end
+  end
 end
