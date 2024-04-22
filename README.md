@@ -2,7 +2,7 @@
 
 ## Introduction
 
-- Access deployed version using this link: https://hotels-0j6j.onrender.com/hotels
+- Access deployed version using this link: https://hotels-0j6j.onrender.com/hotels. It is on free tier so take a while for the app to spin up
 
 ## Dependencies
 

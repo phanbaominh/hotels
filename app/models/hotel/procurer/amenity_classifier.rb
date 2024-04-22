@@ -1,6 +1,7 @@
 class Hotel::Procurer::AmenityClassifier
   ROOM_AMENITIES = ["aircon", "tv", "coffee machine", "kettle", "hair dryer", "iron", "bathtub", "minibar"].freeze
 
+  # Simple solution to standardize terminologies
   STANDARD_DICT = {
     "tub" => "bathtub",
     "bath tub" => "bathtub",

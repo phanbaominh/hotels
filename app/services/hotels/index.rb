@@ -1,3 +1,6 @@
+# For simplicity sake and since the assigment doesn't require it, we will ignore pagination support for now.
+# In a real app, it's a must have.
+
 module Hotels
   class Index
     attr_reader :data
@@ -42,6 +45,9 @@ module Hotels
     end
 
     def cache_expiration
+      # The hotels data that we returned to users are unlikely to change frequently.
+      # All of the fields are unlikely to change on day-to-day basis so we can confidently cache them.
+      # The default value is 1 minute, but it can be easily adjusted if needed through ENV variable.
       (ENV["PROCURE_CACHE_EXPIRATION"] || 1).to_i.minute
     end
   end

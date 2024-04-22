@@ -2,16 +2,21 @@ require "open-uri"
 
 class Hotel::Procurer
   # PROBLEMS:
-  #  "1 Nanson Rd, Singapore 238909" what is the correct address format?
-  # site - Bar, amenities - Bar -> wrong description for amenities - Bar https://d2ey9sqrvkqdfs.cloudfront.net/YwAr/i57_m.jpg, should be breakfast
-  # dead image for https://d2ey9sqrvkqdfs.cloudfront.net/0qZF/6.jpg
-  # almost duplicated image for https://d2ey9sqrvkqdfs.cloudfront.net/YwAr/i1_m.jpg && https://d2ey9sqrvkqdfs.cloudfront.net/YwAr/i10_m.jpg
+  # 1. Address format is not consistent across suppliers
+  # Addresses can be considered to be usable if users can search on Google and the search result return the right hotel
+  # Unless there is a need like FE requiring the address to be in a specific format, we can leave it as it is.
+
+  # 2. Image descriptions are not correct
+  # Wrong description for images shall be ignored in this implementation for simplicity.
+  # In a real app, we would ideally have a system in place to manually verify the correctness of the hotels data presented to users.
+  # OR a ML solution to identify the objects in the image to validate.
 
   SUPPLIERS = [
     ACME = "acme",
     PAPERFLIES = "paperflies",
     PATAGONIA = "patagonia"
   ].freeze
+
 
   SUPPLIER_URLS = {
     ACME => "https://5f2be0b4ffc88500167b85a0.mockapi.io/suppliers/acme",
@@ -32,7 +37,11 @@ class Hotel::Procurer
   RULES = {
     "id" => MatchingRules::PickOne.new,
     "destination_id" => MatchingRules::PickOne.new,
-    # in real app, should query some external site to match the name and the address correctly
+    # acme supplier provide the full name of the hotel compare to paperflies e.g InterContinental Singapore Robertson Quay vs InterContinental
+    # There are two InterContinental hotels in Singapore so the full name help to differentiate them.
+    # acme supplier also provide more hotels data than patagonia so we prioritize acme.
+    # Of course if there are more data given for each supplier, we can make a better decision on which supplier to prioritize.
+    # We can also implement a more robust approach like searching the hotel name on google and see if the search result return the right hotel.
     "name" => MatchingRules::PriorityPickOne.new([ACME]),
     "location" => MatchingRules::Merge.new,
     "description" => MatchingRules::PickLongest.new,
