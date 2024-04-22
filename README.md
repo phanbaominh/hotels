@@ -3,6 +3,9 @@
 ## Introduction
 
 - Access deployed version using this link: https://hotels-0j6j.onrender.com/hotels. It is on free tier so take a while for the app to spin up
+- Example usage with parameters:
+  - Filter by destination: `https://hotels-0j6j.onrender.com/hotels?destination=1122`
+  - Filter by hotels: `https://hotels-0j6j.onrender.com/hotels?hotels%5B%5D=SjyX&hotels%5B%5D=f8c9`
 
 ## Dependencies
 
