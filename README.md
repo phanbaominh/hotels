@@ -24,4 +24,4 @@
 
 ## Testing
 
-- Run `bin/rspec path/to/test/files/or/folder`
+- Run `bin/rspec path/to/test/files/or/folder` or `bin/rspec` to test all
