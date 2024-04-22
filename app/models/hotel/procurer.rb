@@ -17,7 +17,6 @@ class Hotel::Procurer
     PATAGONIA = "patagonia"
   ].freeze
 
-
   SUPPLIER_URLS = {
     ACME => "https://5f2be0b4ffc88500167b85a0.mockapi.io/suppliers/acme",
     PAPERFLIES => "https://5f2be0b4ffc88500167b85a0.mockapi.io/suppliers/paperflies",
@@ -73,6 +72,11 @@ class Hotel::Procurer
 
   def after_match(hotel_attributes)
     remove_less_specific_amenity(hotel_attributes) # e.g remove 'pool' if 'indoor/outdoor pool' exists
+    remove_dead_image_links(hotel_attributes)
+  end
+
+  def remove_dead_image_links(hotel_attributes)
+    Validators::LiveImage.validate!(hotel_attributes)
   end
 
   def remove_less_specific_amenity(hotel_attributes)
